@@ -17,6 +17,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 20px;
+    animation: spiralPole 4s linear infinite;
 }
 
 .big-top {
@@ -165,4 +166,9 @@ button:active {
 @keyframes pulse-elephant {
     0%, 100% { transform: scaleX(-1) scale(1); }
     50% { transform: scaleX(-1) scale(1.5); }
+}
+
+@keyframes spiralPole {
+    0% { background-position: 0 0, 20px 20px; }
+    100% { background-position: 40px 40px, 60px 60px; }
 }
