@@ -68,9 +68,15 @@
 
     <script>
         // Initialize form visibility
-        document.getElementById('storyButton').style.display = 'none';
-        document.getElementById('jarJarForm').style.display = 'none';
-        document.getElementById('creditCardForm').style.display = 'none';
+        window.addEventListener('DOMContentLoaded', function() {
+            const storyBtn = document.getElementById('storyButton');
+            const jarJarFrm = document.getElementById('jarJarForm');
+            const ccFrm = document.getElementById('creditCardForm');
+            
+            if (storyBtn) storyBtn.style.display = 'none';
+            if (jarJarFrm) jarJarFrm.style.display = 'none';
+            if (ccFrm) ccFrm.style.display = 'none';
+        });
         
         function playBoing() {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -217,7 +223,6 @@
             // Reset forms
             document.getElementById('creditCardForm').reset();
             document.getElementById('creditCardForm').style.display = 'none';
-        });
         });
     </script>
 </body>
