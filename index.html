@@ -67,6 +67,11 @@
     </div>
 
     <script>
+        // Initialize form visibility
+        document.getElementById('storyButton').style.display = 'none';
+        document.getElementById('jarJarForm').style.display = 'none';
+        document.getElementById('creditCardForm').style.display = 'none';
+        
         function playBoing() {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const now = audioContext.currentTime;
@@ -138,6 +143,8 @@
             overlay.classList.add('active');
             jarJarClickCount = 0;
             document.getElementById('jarJarForm').style.display = 'none';
+            document.getElementById('creditCardForm').style.display = 'none';
+            document.getElementById('storyButton').style.display = 'block';
         });
         
         document.getElementById('jarJarImage').addEventListener('click', function() {
@@ -204,7 +211,10 @@
         
         document.getElementById('creditCardForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            // Just reset - credit card input is complete
+            // Hide Jar Jar overlay to return to main page
+            const jarJarOverlay = document.getElementById('jarJarOverlay');
+            jarJarOverlay.classList.remove('active');
+            // Reset forms
             document.getElementById('creditCardForm').reset();
             document.getElementById('creditCardForm').style.display = 'none';
         });
