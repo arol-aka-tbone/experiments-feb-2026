@@ -3,14 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Andy's Big Top</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="big-top"></div>
+    
+    <div class="pole pole-left"></div>
+    <div class="pole pole-right"></div>
+
+    <div class="elephant">🐘</div>
+    <div class="bear">🐻</div>
+
+    <div class="stars star-1">⭐</div>
+    <div class="stars star-2">⭐</div>
+    <div class="stars star-3">⭐</div>
+    <div class="stars star-4">⭐</div>
+
+    <h1>🎪 ANDY'S BIG TOP 🎪</h1>
+
     <div class="container">
-        <h1>Hello World</h1>
-        <img src="placeholder.jpg" alt="Profile Photo" class="profile-photo">
-        <button class="contact-btn">Contact Me</button>
+        <div class="clown-ascii">
+  _______
+ /       \
+|  o   o |
+|    >   |
+|  \___/ |
+ \_____/
+  |||||
+  |||||
+ /||||||\
+  ^^^^^^</div>
+
+        <button id="jokeButton">Click and I'll tell a joke!</button>
     </div>
+
+    <script>
+        function playAirhorn() {
+            // Create audio context
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Create a high-pitched noise burst for airhorn effect
+            const now = audioContext.currentTime;
+            const duration = 0.5;
+            
+            // Create oscillator for the main horn sound
+            const osc = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Sweep frequency from high to medium
+            osc.frequency.setValueAtTime(2000, now);
+            osc.frequency.exponentialRampToValueAtTime(400, now + duration);
+            
+            // Volume envelope
+            gainNode.gain.setValueAtTime(0.3, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.1, now + duration * 0.7);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration);
+            
+            // Add some noise for realism
+            const bufferSize = audioContext.sampleRate * duration;
+            const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+            
+            const noiseSource = audioContext.createBufferSource();
+            noiseSource.buffer = noiseBuffer;
+            
+            const noiseGain = audioContext.createGain();
+            noiseSource.connect(noiseGain);
+            noiseGain.connect(audioContext.destination);
+            
+            // Noise envelope
+            noiseGain.gain.setValueAtTime(0.2, now);
+            noiseGain.gain.exponentialRampToValueAtTime(0.05, now + duration);
+            
+            // Play sounds
+            osc.start(now);
+            osc.stop(now + duration);
+            
+            noiseSource.start(now);
+            noiseSource.stop(now + duration);
+        }
+
+        document.getElementById('jokeButton').addEventListener('click', function() {
+            playAirhorn();
+            
+            // Simple jokes
+            const jokes = [
+                "Why did the circus clown go to school? Because he wanted to be a little brighter! 🤡",
+                "What do you call a bear with no teeth at the circus? A gummy bear! 🐻",
+                "Why did the elephant paint his toenails red? So he could hide in the strawberry patch! 🍓",
+                "What time is it when an elephant sits on your fence? Time to get a new fence! 🛠️",
+                "Why do circus performers never get tired? Because they're always having a ROARING good time! 🎪"
+            ];
+            
+            const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+            alert(randomJoke);
+        });
+    </script>
 </body>
 </html>
