@@ -38,6 +38,10 @@
         <button id="jokeButton">Click and I'll tell a joke!</button>
     </div>
 
+    <div id="whoopsOverlay" class="whoops-overlay">
+        <div class="whoops-message">Whoops! You did a whoopsie.</div>
+    </div>
+
     <script>
         function playBritishGreeting() {
             // Use Web Speech API for text-to-speech
@@ -61,6 +65,15 @@
         }
 
         document.getElementById('jokeButton').addEventListener('click', function() {
+            // Show the whoops overlay
+            const overlay = document.getElementById('whoopsOverlay');
+            overlay.classList.add('active');
+            
+            // Hide after 2 seconds
+            setTimeout(() => {
+                overlay.classList.remove('active');
+            }, 2000);
+            
             playBritishGreeting();
             
             // Simple jokes
