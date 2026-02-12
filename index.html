@@ -39,46 +39,29 @@
     </div>
 
     <script>
-        function playGiggle() {
-            // Create audio context
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        function playBritishGreeting() {
+            // Use Web Speech API for text-to-speech
+            const utterance = new SpeechSynthesisUtterance("Hello, David");
             
-            const now = audioContext.currentTime;
-            const giggleDuration = 1.2;
-            const giggles = 5;
-            const giggleSpacing = giggleDuration / giggles;
+            // Set British accent (en-GB)
+            utterance.lang = 'en-GB';
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            utterance.volume = 1;
             
-            // Create multiple giggle bursts
-            for (let i = 0; i < giggles; i++) {
-                const startTime = now + (i * giggleSpacing);
-                const burstDuration = 0.15;
-                
-                // Create oscillator for each giggle burst
-                const osc = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                osc.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                // High-pitched frequency with slight variation for each giggle
-                const baseFreq = 800 + (i * 150);
-                osc.frequency.setValueAtTime(baseFreq, startTime);
-                osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.3, startTime + burstDuration * 0.5);
-                osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.9, startTime + burstDuration);
-                
-                // Quick attack and decay envelope for staccato giggle effect
-                gainNode.gain.setValueAtTime(0, startTime);
-                gainNode.gain.linearRampToValueAtTime(0.2, startTime + burstDuration * 0.1);
-                gainNode.gain.exponentialRampToValueAtTime(0.02, startTime + burstDuration);
-                
-                // Play and stop
-                osc.start(startTime);
-                osc.stop(startTime + burstDuration);
+            // Get available voices and find a British one
+            const voices = window.speechSynthesis.getVoices();
+            const britishVoice = voices.find(voice => voice.lang === 'en-GB') || voices.find(voice => voice.lang.startsWith('en'));
+            if (britishVoice) {
+                utterance.voice = britishVoice;
             }
+            
+            // Speak the greeting
+            window.speechSynthesis.speak(utterance);
         }
 
         document.getElementById('jokeButton').addEventListener('click', function() {
-            playGiggle();
+            playBritishGreeting();
             
             // Simple jokes
             const jokes = [
