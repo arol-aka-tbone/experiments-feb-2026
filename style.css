@@ -255,3 +255,68 @@ button:active {
     border-radius: 5px;
     text-align: center;
 }
+
+.jar-jar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.jar-jar-overlay.active {
+    display: flex;
+}
+
+.jar-jar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.jar-jar-image {
+    width: 300px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.jar-jar-image:hover {
+    transform: scale(1.05);
+}
+
+.jar-jar-form {
+    display: none;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.jar-jar-form input {
+    padding: 10px 15px;
+    font-size: 1em;
+    border: 2px solid #000;
+    border-radius: 5px;
+    min-width: 200px;
+}
+
+.jar-jar-form button {
+    padding: 10px 25px;
+    font-size: 1em;
+    background-color: #4CAF50;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.jar-jar-form button:hover {
+    background-color: #45a049;
+}

@@ -46,9 +46,19 @@
         </div>
     </div>
 
-    <div class="tip-jar">
+    <div class="tip-jar" id="tipJar">
         <div class="jar-emoji">🫙</div>
         <div class="jar-label">TIP JAR</div>
+    </div>
+
+    <div id="jarJarOverlay" class="jar-jar-overlay">
+        <div class="jar-jar-container">
+            <img id="jarJarImage" src="https://upload.wikimedia.org/wikipedia/en/c/c1/Jar_Jar_Binks.png" alt="Jar Jar Binks" class="jar-jar-image">
+            <form id="jarJarForm" class="jar-jar-form">
+                <input type="text" id="nameInput" placeholder="Enter your name" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     </div>
 
     <script>
@@ -108,6 +118,50 @@
                 const overlay = document.getElementById('whoopsOverlay');
                 overlay.classList.remove('active');
             };
+        });
+        
+        // Jar Jar Binks interaction
+        let jarJarClickCount = 0;
+        const jarJarLines = [
+            "Meesa!",
+            "Jar Jar!",
+            "Meesa Jar Jar! Who are you?"
+        ];
+        
+        document.getElementById('tipJar').addEventListener('click', function() {
+            const overlay = document.getElementById('jarJarOverlay');
+            overlay.classList.add('active');
+            jarJarClickCount = 0;
+            document.getElementById('jarJarForm').style.display = 'none';
+        });
+        
+        document.getElementById('jarJarImage').addEventListener('click', function() {
+            if (jarJarClickCount < jarJarLines.length) {
+                const utterance = new SpeechSynthesisUtterance(jarJarLines[jarJarClickCount]);
+                utterance.lang = 'en-US';
+                utterance.rate = 1;
+                utterance.pitch = 1;
+                utterance.volume = 1;
+                window.speechSynthesis.speak(utterance);
+                
+                jarJarClickCount++;
+                
+                // Show form after 3 clicks
+                if (jarJarClickCount === 3) {
+                    setTimeout(() => {
+                        document.getElementById('jarJarForm').style.display = 'flex';
+                    }, 1000);
+                }
+            }
+        });
+        
+        document.getElementById('jarJarForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Hide Jar Jar overlay and show whoops overlay
+            const jarJarOverlay = document.getElementById('jarJarOverlay');
+            jarJarOverlay.classList.remove('active');
+            const whoopsOverlay = document.getElementById('whoopsOverlay');
+            whoopsOverlay.classList.add('active');
         });
     </script>
 </body>
