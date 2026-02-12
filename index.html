@@ -39,60 +39,46 @@
     </div>
 
     <script>
-        function playAirhorn() {
+        function playGiggle() {
             // Create audio context
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             
-            // Create a high-pitched noise burst for airhorn effect
             const now = audioContext.currentTime;
-            const duration = 0.5;
+            const giggleDuration = 1.2;
+            const giggles = 5;
+            const giggleSpacing = giggleDuration / giggles;
             
-            // Create oscillator for the main horn sound
-            const osc = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            osc.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            // Sweep frequency from high to medium
-            osc.frequency.setValueAtTime(2000, now);
-            osc.frequency.exponentialRampToValueAtTime(400, now + duration);
-            
-            // Volume envelope
-            gainNode.gain.setValueAtTime(0.3, now);
-            gainNode.gain.exponentialRampToValueAtTime(0.1, now + duration * 0.7);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration);
-            
-            // Add some noise for realism
-            const bufferSize = audioContext.sampleRate * duration;
-            const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-            const output = noiseBuffer.getChannelData(0);
-            
-            for (let i = 0; i < bufferSize; i++) {
-                output[i] = Math.random() * 2 - 1;
+            // Create multiple giggle bursts
+            for (let i = 0; i < giggles; i++) {
+                const startTime = now + (i * giggleSpacing);
+                const burstDuration = 0.15;
+                
+                // Create oscillator for each giggle burst
+                const osc = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                osc.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // High-pitched frequency with slight variation for each giggle
+                const baseFreq = 800 + (i * 150);
+                osc.frequency.setValueAtTime(baseFreq, startTime);
+                osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.3, startTime + burstDuration * 0.5);
+                osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.9, startTime + burstDuration);
+                
+                // Quick attack and decay envelope for staccato giggle effect
+                gainNode.gain.setValueAtTime(0, startTime);
+                gainNode.gain.linearRampToValueAtTime(0.2, startTime + burstDuration * 0.1);
+                gainNode.gain.exponentialRampToValueAtTime(0.02, startTime + burstDuration);
+                
+                // Play and stop
+                osc.start(startTime);
+                osc.stop(startTime + burstDuration);
             }
-            
-            const noiseSource = audioContext.createBufferSource();
-            noiseSource.buffer = noiseBuffer;
-            
-            const noiseGain = audioContext.createGain();
-            noiseSource.connect(noiseGain);
-            noiseGain.connect(audioContext.destination);
-            
-            // Noise envelope
-            noiseGain.gain.setValueAtTime(0.2, now);
-            noiseGain.gain.exponentialRampToValueAtTime(0.05, now + duration);
-            
-            // Play sounds
-            osc.start(now);
-            osc.stop(now + duration);
-            
-            noiseSource.start(now);
-            noiseSource.stop(now + duration);
         }
 
         document.getElementById('jokeButton').addEventListener('click', function() {
-            playAirhorn();
+            playGiggle();
             
             // Simple jokes
             const jokes = [
