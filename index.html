@@ -43,51 +43,6 @@
     </div>
 
     <script>
-        function playBritishGreeting() {
-            // Use Web Speech API for text-to-speech
-            const utterance = new SpeechSynthesisUtterance("Hello, David");
-            
-            // Set British accent (en-GB)
-            utterance.lang = 'en-GB';
-            utterance.rate = 1;
-            utterance.pitch = 1;
-            utterance.volume = 1;
-            
-            // Get available voices and find a British one
-            const voices = window.speechSynthesis.getVoices();
-            const britishVoice = voices.find(voice => voice.lang === 'en-GB') || voices.find(voice => voice.lang.startsWith('en'));
-            if (britishVoice) {
-                utterance.voice = britishVoice;
-            }
-            
-            // Speak the greeting
-            window.speechSynthesis.speak(utterance);
-        }
-
-        document.getElementById('jokeButton').addEventListener('click', function() {
-            // Show the whoops overlay
-            const overlay = document.getElementById('whoopsOverlay');
-            overlay.classList.add('active');
-            
-            // Hide after 2 seconds
-            setTimeout(() => {
-                overlay.classList.remove('active');
-            }, 2000);
-            
-            playBritishGreeting();
-            
-            // Simple jokes
-            const jokes = [
-                "Why did the circus clown go to school? Because he wanted to be a little brighter! 🤡",
-                "What do you call a bear with no teeth at the circus? A gummy bear! 🐻",
-                "Why did the elephant paint his toenails red? So he could hide in the strawberry patch! 🍓",
-                "What time is it when an elephant sits on your fence? Time to get a new fence! 🛠️",
-                "Why do circus performers never get tired? Because they're always having a ROARING good time! 🎪"
-            ];
-            
-            const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
-            alert(randomJoke);
-        });
     </script>
 </body>
 </html>
