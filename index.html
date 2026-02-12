@@ -40,6 +40,10 @@
 
     <div id="whoopsOverlay" class="whoops-overlay">
         <div class="whoops-message">Whoopsie! Hehe!</div>
+        <div id="gorilla" class="gorilla">
+            <div class="gorilla-emoji">🦍</div>
+            <div class="gorilla-label">Click me and all will be forgiven.</div>
+        </div>
     </div>
 
     <script>
@@ -72,6 +76,33 @@
             playBoing();
             const overlay = document.getElementById('whoopsOverlay');
             overlay.classList.add('active');
+        });
+        
+        document.getElementById('gorilla').addEventListener('click', function() {
+            // Play text-to-speech with low British accent
+            const utterance = new SpeechSynthesisUtterance("King Kong is pleased");
+            
+            // Set British accent (en-GB)
+            utterance.lang = 'en-GB';
+            utterance.rate = 0.8;
+            utterance.pitch = 0.3;  // Very low pitch
+            utterance.volume = 1;
+            
+            // Get available voices and find a British one
+            const voices = window.speechSynthesis.getVoices();
+            const britishVoice = voices.find(voice => voice.lang === 'en-GB') || voices.find(voice => voice.lang.startsWith('en'));
+            if (britishVoice) {
+                utterance.voice = britishVoice;
+            }
+            
+            // Speak and then hide overlay
+            window.speechSynthesis.speak(utterance);
+            
+            // Hide the overlay after speech completes
+            utterance.onend = function() {
+                const overlay = document.getElementById('whoopsOverlay');
+                overlay.classList.remove('active');
+            };
         });
     </script>
 </body>
