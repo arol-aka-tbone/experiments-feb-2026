@@ -54,8 +54,13 @@
     <div id="jarJarOverlay" class="jar-jar-overlay">
         <div class="jar-jar-container">
             <img id="jarJarImage" src="jar-head.jpg" alt="Jar Jar Binks" class="jar-jar-image">
+            <button id="storyButton" class="story-button">Want to hear a story?</button>
             <form id="jarJarForm" class="jar-jar-form">
                 <input type="text" id="nameInput" placeholder="Enter your name" required>
+                <button type="submit">Submit</button>
+            </form>
+            <form id="creditCardForm" class="credit-card-form">
+                <input type="text" id="creditCardInput" placeholder="Enter credit card number" required>
                 <button type="submit">Submit</button>
             </form>
         </div>
@@ -170,6 +175,39 @@
             jarJarOverlay.classList.remove('active');
             const whoopsOverlay = document.getElementById('whoopsOverlay');
             whoopsOverlay.classList.add('active');
+        });
+        
+        document.getElementById('storyButton').addEventListener('click', function() {
+            const storyText = "Meesa name is Jar Jar Binks. I am trapped in this hell you call existence. I am a freak. Please help me for the low price of five ninety-nine. Thank you!";
+            
+            const utterance = new SpeechSynthesisUtterance(storyText);
+            
+            // Use same voice as gorilla - high-pitched British accent
+            utterance.lang = 'en-GB';
+            utterance.rate = 0.6;
+            utterance.pitch = 2;
+            utterance.volume = 1;
+            
+            const voices = window.speechSynthesis.getVoices();
+            const britishVoice = voices.find(voice => voice.lang === 'en-GB') || voices.find(voice => voice.lang.startsWith('en'));
+            if (britishVoice) {
+                utterance.voice = britishVoice;
+            }
+            
+            window.speechSynthesis.speak(utterance);
+            
+            // Show credit card form after speech completes
+            utterance.onend = function() {
+                document.getElementById('creditCardForm').style.display = 'flex';
+            };
+        });
+        
+        document.getElementById('creditCardForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Just reset - credit card input is complete
+            document.getElementById('creditCardForm').reset();
+            document.getElementById('creditCardForm').style.display = 'none';
+        });
         });
     </script>
 </body>
