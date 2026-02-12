@@ -39,10 +39,40 @@
     </div>
 
     <div id="whoopsOverlay" class="whoops-overlay">
-        <div class="whoops-message">Whoops! You did a whoopsie.</div>
+        <div class="whoops-message">Whoopsie! Hehe!</div>
     </div>
 
     <script>
+        function playBoing() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const now = audioContext.currentTime;
+            const duration = 0.5;
+            
+            // Create oscillator for boing pitch
+            const osc = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Boing frequency sweep - starts high, goes low
+            osc.frequency.setValueAtTime(800, now);
+            osc.frequency.exponentialRampToValueAtTime(200, now + duration);
+            
+            // Volume envelope
+            gainNode.gain.setValueAtTime(0.3, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration);
+            
+            // Play
+            osc.start(now);
+            osc.stop(now + duration);
+        }
+        
+        document.getElementById('jokeButton').addEventListener('click', function() {
+            playBoing();
+            const overlay = document.getElementById('whoopsOverlay');
+            overlay.classList.add('active');
+        });
     </script>
 </body>
 </html>
