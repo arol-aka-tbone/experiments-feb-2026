@@ -79,13 +79,13 @@
         });
         
         document.getElementById('gorilla').addEventListener('click', function() {
-            // Play text-to-speech with low British accent
-            const utterance = new SpeechSynthesisUtterance("King Kong is pleased");
+            // Play text-to-speech with high-pitched British accent
+            const utterance = new SpeechSynthesisUtterance("Thank you for the banana, friend.");
             
             // Set British accent (en-GB)
             utterance.lang = 'en-GB';
-            utterance.rate = 0.8;
-            utterance.pitch = 0.3;  // Very low pitch
+            utterance.rate = 0.6;  // Slower speech
+            utterance.pitch = 2;   // High-pitched
             utterance.volume = 1;
             
             // Get available voices and find a British one
